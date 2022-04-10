@@ -1,0 +1,56 @@
+unit TabelaFipe.Model.Marca;
+
+interface
+
+uses
+  Pkg.Json.DTO, System.Generics.Collections, REST.Json.Types;
+
+{$M+}
+
+type
+  TMarca = class
+  private
+    FLabel: string;
+    FValue: string;
+  published
+    property &Label: string read FLabel write FLabel;
+    property Value: string read FValue write FValue;
+  end;
+  
+  TMarcas = class(TJsonDTO)
+  private
+    [JSONName('Marcas'), JSONMarshalled(False)]
+    FItemsArray: TArray<TMarca>;
+    [GenericListReflect]
+    FItems: TObjectList<TMarca>;
+    function GetMarcas: TObjectList<TMarca>;
+  protected
+    function GetAsJson: string; override;
+  published
+    property Items: TObjectList<TMarca> read GetMarcas;
+  public
+    destructor Destroy; override;
+  end;
+  
+implementation
+
+{ TMarcas }
+
+destructor TMarcas.Destroy;
+begin
+  GetMarcas.Free;
+  inherited;
+end;
+
+function TMarcas.GetMarcas: TObjectList<TMarca>;
+begin
+  Result := ObjectList<TMarca>(FItems, FItemsArray);
+end;
+
+function TMarcas.GetAsJson: string;
+begin
+  RefreshArray<TMarca>(FItems, FItemsArray);
+  Result := inherited;
+end;
+
+end.

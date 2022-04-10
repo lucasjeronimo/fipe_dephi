@@ -1,0 +1,56 @@
+unit TabelaFipe.Model.AnoModelo;
+
+interface
+
+uses
+  Pkg.Json.DTO, System.Generics.Collections, REST.Json.Types;
+
+{$M+}
+
+type
+  TAnoModelo = class
+  private
+    FLabel: string;
+    FValue: string;
+  published
+    property &Label: string read FLabel write FLabel;
+    property Value: string read FValue write FValue;
+  end;
+  
+  TRoot = class(TJsonDTO)
+  private
+    [JSONName('Items'), JSONMarshalled(False)]
+    FAnosModelosArray: TArray<TAnoModelo>;
+    [GenericListReflect]
+    FAnosModelos: TObjectList<TAnoModelo>;
+    function GetAnosModelos: TObjectList<TAnoModelo>;
+  protected
+    function GetAsJson: string; override;
+  published
+    property AnosModelos: TObjectList<TAnoModelo> read GetAnosModelos;
+  public
+    destructor Destroy; override;
+  end;
+  
+implementation
+
+{ TRoot }
+
+destructor TRoot.Destroy;
+begin
+  GetAnosModelos.Free;
+  inherited;
+end;
+
+function TRoot.GetAnosModelos: TObjectList<TAnoModelo>;
+begin
+  Result := ObjectList<TAnoModelo>(FAnosModelos, FAnosModelosArray);
+end;
+
+function TRoot.GetAsJson: string;
+begin
+  RefreshArray<TAnoModelo>(FAnosModelos, FAnosModelosArray);
+  Result := inherited;
+end;
+
+end.

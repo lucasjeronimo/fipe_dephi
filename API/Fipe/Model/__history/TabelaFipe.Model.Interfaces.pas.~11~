@@ -1,0 +1,21 @@
+unit TabelaFipe.Model.Interfaces;
+
+interface
+
+uses
+   TabelaFipe.Model.Referencia, TabelaFipe.Model.Marca, TabelaFipe.Model.Modelo, TabelaFipe.Model.AnoModelo;
+
+type
+   ITabelaFipe = interface
+      ['{0C133DFB-842C-4E62-89DF-1329A3FBDAF4}']
+      function getReferencias:TReferencias;
+      function getMarcas(AReferencia,ATipoVeiculo:Integer):TMarcas;
+      function getModelos(AReferencia,ATipoVeiculo,AMarca:Integer):TModelos;
+      function getAnosModelos(AReferencia,ATipoVeiculo,AMarca,AModelo:Integer):TAnoModelo;
+      function getMarcas:TMarcas;
+      function getMarcas:TMarcas;
+   end;
+
+implementation
+
+end.
